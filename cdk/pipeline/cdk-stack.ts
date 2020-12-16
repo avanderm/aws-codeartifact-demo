@@ -19,7 +19,7 @@ export class CdkStack extends cdk.Stack {
       sourceAction: new codepipeline_actions.GitHubSourceAction({
         actionName: 'GitHub',
         output: sourceArtifact,
-        oauthToken: cdk.SecretValue.secretsManager('GITHUB_TOKEN_NAME'),
+        oauthToken: cdk.SecretValue.secretsManager('github/token'),
         owner: 'avanderm',
         repo: 'aws-codeartifact-demo',
         branch: 'main'
