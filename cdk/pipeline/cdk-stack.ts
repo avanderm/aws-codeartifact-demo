@@ -27,7 +27,8 @@ export class CdkStack extends cdk.Stack {
 
       synthAction: SimpleSynthAction.standardNpmSynth({
         sourceArtifact,
-        cloudAssemblyArtifact
+        cloudAssemblyArtifact,
+        subdirectory: 'cdk'
       })
     });
 
