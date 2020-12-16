@@ -4,4 +4,9 @@ import * as cdk from '@aws-cdk/core';
 import { CdkStack } from '../pipeline/cdk-stack';
 
 const app = new cdk.App();
-new CdkStack(app, 'CdkStack');
+new CdkStack(app, 'CodeArtifactDemoPipeline', {
+  env: {
+    account: '159832336530',
+    region: 'eu-west-1'
+  }
+});
