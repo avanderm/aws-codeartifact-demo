@@ -34,6 +34,7 @@ export class CdkStack extends cdk.Stack {
     const testStage = pipeline.addStage('Test');
     testStage.addActions(new ShellScriptAction({
       actionName: 'Nox',
+      additionalArtifacts: [sourceArtifact],
       commands: ['nox']
     }));
   }
