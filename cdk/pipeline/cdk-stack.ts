@@ -22,7 +22,7 @@ export class CdkStack extends cdk.Stack {
         oauthToken: cdk.SecretValue.secretsManager('GITHUB_TOKEN_NAME'),
         owner: 'avanderm',
         repo: 'aws-codeartifact-demo',
-        branch: 'master'
+        branch: 'main'
       }),
 
       synthAction: SimpleSynthAction.standardNpmSynth({
