@@ -48,5 +48,10 @@ export class CdkStack extends cdk.Stack {
       input: sourceArtifact,
       type: codepipeline_actions.CodeBuildActionType.TEST
     }));
+
+    const repository = new codeartifact.CfnRepository(this, "Repository", {
+      domainName: 'brainfartlab',
+      repositoryName: 'mypackage'
+    });
   }
 }
