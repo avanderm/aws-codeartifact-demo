@@ -3,8 +3,11 @@ version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      python: 3.8
     commands:
+      - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
       - pip install nox
   build:
     commands:
-      - nox
+      - nox -p 3.8
