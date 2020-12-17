@@ -8,5 +8,8 @@ new CdkStack(app, 'CodeArtifactDemoPipeline', {
   env: {
     account: '159832336530',
     region: 'eu-west-1'
+  },
+  tags: {
+    'Project': 'demo:codeartifact'
   }
 });

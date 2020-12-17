@@ -1,5 +1,6 @@
 import * as cdk from '@aws-cdk/core';
 import * as codeartifact from '@aws-cdk/aws-codeartifact';
+import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import { CdkPipeline, SimpleSynthAction, ShellScriptAction } from '@aws-cdk/pipelines';
@@ -32,11 +33,20 @@ export class CdkStack extends cdk.Stack {
       })
     });
 
+    const testProject = new codebuild.PipelineProject(this, 'TestProject', {
+      buildSpec: codebuild.BuildSpec.fromSourceFilename('cdk/testspec.yml'),
+      environment: {
+        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
+        computeType: codebuild.ComputeType.SMALL
+      }
+    });
+
     const testStage = pipeline.addStage('Test');
-    testStage.addActions(new ShellScriptAction({
-      actionName: 'Nox',
-      additionalArtifacts: [sourceArtifact],
-      commands: ['nox']
+    testStage.addActions(new codepipeline_actions.CodeBuildAction({
+      actionName: 'Test',
+      project: testProject,
+      input: sourceArtifact,
+      type: codepipeline_actions.CodeBuildActionType.TEST
     }));
   }
 }
