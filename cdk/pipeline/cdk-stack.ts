@@ -76,7 +76,7 @@ export class CdkStack extends cdk.Stack {
       }
     });
 
-    const buildStage = pipeline.addStage('Build');
+    const buildStage = pipeline.addStage('Publish');
     buildStage.addActions(new codepipeline_actions.CodeBuildAction({
       actionName: 'Build',
       project: buildProject,
