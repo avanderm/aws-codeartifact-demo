@@ -2,7 +2,7 @@ import click.testing
 import pytest
 
 
-from my_package import cli
+from codeartifact_demo import cli
 
 
 @pytest.fixture

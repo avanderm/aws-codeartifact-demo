@@ -55,7 +55,7 @@ export class CdkStack extends cdk.Stack {
 
     const repository = new codeartifact.CfnRepository(this, "Repository", {
       domainName: 'brainfartlab',
-      repositoryName: 'mypackage',
+      repositoryName: 'codeartifact-demo',
       upstreams: [
         'pypi-store'
       ]
