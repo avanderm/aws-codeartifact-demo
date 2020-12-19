@@ -3,6 +3,7 @@ import * as codeartifact from '@aws-cdk/aws-codeartifact';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
+import * as iam from '@aws-cdk/aws-iam';
 import { CdkPipeline, SimpleSynthAction, ShellScriptAction } from '@aws-cdk/pipelines';
 
 export class CdkStack extends cdk.Stack {
@@ -54,6 +55,8 @@ export class CdkStack extends cdk.Stack {
       repositoryName: 'mypackage'
     });
 
+    const buildRole = undefined;
+
     const buildProject = new codebuild.PipelineProject(this, 'BuildProject', {
       buildSpec: codebuild.BuildSpec.fromSourceFilename('cdk/buildspec.yml'),
       environment: {
@@ -73,8 +76,19 @@ export class CdkStack extends cdk.Stack {
             type: codebuild.BuildEnvironmentVariableType.PLAINTEXT
           }
         }
-      }
+      },
+      role: buildRole
     });
+
+    buildProject.addToRolePolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      resources: [
+        repository.ref
+      ],
+      actions: [
+        'codeartifact:GetAuthorizationToken'
+      ]
+    }));
 
     const buildStage = pipeline.addStage('Publish');
     buildStage.addActions(new codepipeline_actions.CodeBuildAction({
