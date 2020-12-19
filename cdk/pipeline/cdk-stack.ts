@@ -53,5 +53,35 @@ export class CdkStack extends cdk.Stack {
       domainName: 'brainfartlab',
       repositoryName: 'mypackage'
     });
+
+    const buildProject = new codebuild.PipelineProject(this, 'BuildProject', {
+      buildSpec: codebuild.BuildSpec.fromSourceFilename('cdk/buildspec.yml'),
+      environment: {
+        buildImage: codebuild.LinuxBuildImage.AMAZON_LINUX_2_3,
+        computeType: codebuild.ComputeType.SMALL,
+        environmentVariables: {
+          'REPOSITORY': {
+            value: repository.repositoryName,
+            type: codebuild.BuildEnvironmentVariableType.PLAINTEXT
+          },
+          'DOMAIN': {
+            value: 'brainfartlab',
+            type: codebuild.BuildEnvironmentVariableType.PLAINTEXT
+          },
+          'OWNER': {
+            value: cdk.Stack.of(this).account,
+            type: codebuild.BuildEnvironmentVariableType.PLAINTEXT
+          }
+        }
+      }
+    });
+
+    const buildStage = pipeline.addStage('Build');
+    buildStage.addActions(new codepipeline_actions.CodeBuildAction({
+      actionName: 'Build',
+      project: buildProject,
+      input: sourceArtifact,
+      type: codepipeline_actions.CodeBuildActionType.BUILD
+    }));
   }
 }

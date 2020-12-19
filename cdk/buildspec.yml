@@ -1,0 +1,29 @@
+---
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8
+    commands:
+      - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+      - source $HOME/.poetry/env
+
+  pre-build:
+    commands:
+      - >
+        aws codeartifact login
+          --tool pip
+          --repository $REPOSITORY
+          --domain $DOMAIN
+          --domain-owner $OWNER
+
+  build:
+    commands:
+      - >
+        PASSWORD=$(aws codeartifact get-authorization-token
+          --domain $DOMAIN
+          --domain-owner $OWNER
+          --query authorizationToken
+          --output text)
+      - echo "$PASSWORD"
