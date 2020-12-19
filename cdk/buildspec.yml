@@ -17,6 +17,7 @@ phases:
           --repository $REPOSITORY \
           --domain $DOMAIN \
           --domain-owner $OWNER
+      - poetry config repositories.codeartifact https://$DOMAIN-$OWNER.d.codeartifact.$AWS_REGION.amazonaws.com
 
   build:
     commands:
@@ -26,4 +27,4 @@ phases:
           --domain-owner $OWNER \
           --query authorizationToken \
           --output text)
-      - echo "$PASSWORD"
+      - poetry publish -r codeartifact -u aws -p $PASSWORD

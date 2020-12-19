@@ -77,7 +77,7 @@ export class CdkStack extends cdk.Stack {
           'OWNER': {
             value: account,
             type: codebuild.BuildEnvironmentVariableType.PLAINTEXT
-          }
+          },
         }
       },
       role: buildRole
