@@ -21,6 +21,7 @@ phases:
 
   build:
     commands:
+      - poetry build
       - >
         PASSWORD=$(aws codeartifact get-authorization-token \
           --domain $DOMAIN \
