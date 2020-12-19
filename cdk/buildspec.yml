@@ -12,18 +12,18 @@ phases:
   pre_build:
     commands:
       - >
-        aws codeartifact login
-          --tool pip
-          --repository $REPOSITORY
-          --domain $DOMAIN
+        aws codeartifact login \
+          --tool pip \
+          --repository $REPOSITORY \
+          --domain $DOMAIN \
           --domain-owner $OWNER
 
   build:
     commands:
       - >
-        PASSWORD=$(aws codeartifact get-authorization-token
-          --domain $DOMAIN
-          --domain-owner $OWNER
-          --query authorizationToken
+        PASSWORD=$(aws codeartifact get-authorization-token \
+          --domain $DOMAIN \
+          --domain-owner $OWNER \
+          --query authorizationToken \
           --output text)
       - echo "$PASSWORD"
