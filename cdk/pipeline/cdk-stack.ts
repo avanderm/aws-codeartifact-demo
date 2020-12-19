@@ -83,25 +83,7 @@ export class CdkStack extends cdk.Stack {
       role: buildRole
     });
 
-    buildProject.addToRolePolicy(new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      resources: [
-        `arn:aws:codeartifact:${region}:${account}:domain/${repository.domainName}`
-      ],
-      actions: [
-        'codeartifact:GetAuthorizationToken'
-      ]
-    }));
-
-    buildProject.addToRolePolicy(new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      resources: [
-        buildProject.role!.roleArn
-      ],
-      actions: [
-        'sts:GetServiceBearerToken'
-      ]
-    }));
+    buildProject.role!.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AWSCodeArtifactAdminAccess'));
 
     const buildStage = pipeline.addStage('Publish');
     buildStage.addActions(new codepipeline_actions.CodeBuildAction({
