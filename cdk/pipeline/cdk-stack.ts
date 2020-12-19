@@ -93,6 +93,16 @@ export class CdkStack extends cdk.Stack {
       ]
     }));
 
+    buildProject.addToRolePolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      resources: [
+        buildProject.role!.roleArn
+      ],
+      actions: [
+        'sts:GetServiceBearerToken'
+      ]
+    }));
+
     const buildStage = pipeline.addStage('Publish');
     buildStage.addActions(new codepipeline_actions.CodeBuildAction({
       actionName: 'Build',
