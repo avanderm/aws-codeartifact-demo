@@ -10,6 +10,9 @@ export class CdkStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
+    const account = cdk.Stack.of(this).account;
+    const region = cdk.Stack.of(this).region;
+
     // The code that defines your stack goes here
     const sourceArtifact = new codepipeline.Artifact();
     const cloudAssemblyArtifact = new codepipeline.Artifact();
@@ -72,7 +75,7 @@ export class CdkStack extends cdk.Stack {
             type: codebuild.BuildEnvironmentVariableType.PLAINTEXT
           },
           'OWNER': {
-            value: cdk.Stack.of(this).account,
+            value: account,
             type: codebuild.BuildEnvironmentVariableType.PLAINTEXT
           }
         }
@@ -83,7 +86,7 @@ export class CdkStack extends cdk.Stack {
     buildProject.addToRolePolicy(new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       resources: [
-        repository.ref
+        `arn:aws:codeartifact:${region}:${account}:domain/${repository.domainName}`
       ],
       actions: [
         'codeartifact:GetAuthorizationToken'
